@@ -13,23 +13,24 @@ class App(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("Relación HR y TL")
-                
-        self.archivo = tk.Frame(self, width=300, height=300, bg="", borderwidth=1,colormap="new")
-        self.graficas = tk.Frame(self, width=300, height=300, bg="", borderwidth=1)
-        
-        self.archivo.pack(side=tk.LEFT)
-        self.graficas.pack(side=tk.RIGHT)
-        
-        self.boton_archivo = tk.Button(self.archivo, text="Blue", fg="gray")
-        self.boton_archivo.pack(side = tk.LEFT)
-        
-        self.image = tk.PhotoImage(file="Chanos.png")
-        tk.Label(self.graficas, image=self.image).pack()
-        
-        
+        self.configure(width=800, height=500)
+        opciones = tk.LabelFrame(self, text="Opciones")
+        opciones.place(x=10, y=10, height=450)
+
+        seccionGraf = tk.LabelFrame(self, text="Sección de gráficas")
+        seccionGraf.place(x=200, y=10, height=450, width=550)
 
 
-
+        
+        btn_archivo  = tk.Button(opciones, text="Cargar archivo")
+        btn_archivo.pack(padx=11, pady=11)
+        btn_exportar = tk.Button(opciones, text="Exportar a excel")
+        btn_exportar.pack(padx=30, pady=50)
+        
+        self.imagen = tk.PhotoImage(file="Chanos.png")
+        #tk.Label(seccionGraf, image=self.imagen).pack(padx=250, pady=100)       
+        tk.Label(seccionGraf, image=self.imagen).place(x=75, y=75)       
+        
 if __name__ == "__main__":
     app = App()
     app.mainloop()
