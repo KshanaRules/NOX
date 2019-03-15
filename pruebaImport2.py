@@ -1,0 +1,2 @@
+def mensaje():
+    print("Hola")
