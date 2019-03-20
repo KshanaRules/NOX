@@ -1,6 +1,11 @@
 import pandas as pd
 import os
+#import matplotlib.pyplot as plt
+import matplotlib 
+matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
+plt.rcParams.update({'figure.max_open_warning': 0})
+plt.rcParams.update({'figure.dpi': 65})
 
 
 
@@ -25,20 +30,21 @@ def menor(datos):
             
     return [dato,poz]
 
-def leerArchivo(filename):  
-    xls = pd.ExcelFile('PruebaEspecies.xlsx')
-    especies = pd.read_excel(filename)
-    NumEspecies = len(xls.sheet_names)
-    #NumEspecies = 4
+def leerArchivo(filename,NumEspecies,especiesFile):  
+    xls = pd.ExcelFile(filename)
+    especies = pd.read_excel(especiesFile)
+    NumEspecies = len(xls.sheet_names)    
+    
+
     """
     PASO 1: Agrupa todos los valores, de todas las especies del archivo de la hoja de cálculo. Se organiza para aplicar las operaciones necesarias 
     para obtener los datos que serán utilizados en subsecuentes operaciones
     """
-    print("1")
+    #print("1")
     ciclo = 0
     for file in xls.sheet_names:
-        print("2")
-        ArchivoCSV = pd.read_excel('PruebaEspecies.xlsx',ciclo)
+        #print("2")
+        ArchivoCSV = pd.read_excel(filename,ciclo)
         A = (ArchivoCSV['Asc import'] + ArchivoCSV['Asc flow'] + ArchivoCSV['Asc export'] + ArchivoCSV['Asc resp']) * ArchivoCSV['Capacity'] / 100
         O = (ArchivoCSV['Ovh import'] + ArchivoCSV['Ovh flow'] + ArchivoCSV['Ovh export'] + ArchivoCSV['Ovh resp']) * ArchivoCSV['Capacity'] / 100
         C = A + O 
@@ -67,7 +73,7 @@ def leerArchivo(filename):
             pos = pos + 1
             dim = dim + 1
            
-        print("3")
+        #print("3")
         if ciclo==len(xls.sheet_names)-(50-NumEspecies):
             break
         
@@ -77,7 +83,7 @@ def leerArchivo(filename):
     """
     PASO 2: Agregar la columna X-Xmin y Rent, para obtener los valores se utilizan los datos de la entropía que fueron generados en el PASO 1
     """
-    print("4")
+    #print("4")
     Prom_ent= temp['Entropia'].min()
     temp['X-Xmin']  = temp['Entropia'] - Prom_ent
     Prom_XXmin = temp['X-Xmin'].max()
@@ -92,10 +98,11 @@ def leerArchivo(filename):
     if (os.path.exists("Datos") == False):
         os.mkdir("Datos")
         
+        
     ArchivoCSV=temp
     esp = 0
     while esp < NumEspecies:
-        print("5")
+        #print("5")
 
         
         filtro = especies.loc[esp+1][0]
@@ -129,10 +136,10 @@ def leerArchivo(filename):
     """
     PASO 4: Genera la la tabla de relación nivel trófico (TL) vs Tasa de cosecha (HR) - FINALES
     """
-    print("6")
+    #print("6")
     esp = 0
     while esp < NumEspecies:
-        print("7")        
+        #print("7")        
         filtro = especies.loc[esp+1][0]
         l = ["Especies","TL"]
         c = 0
@@ -156,10 +163,10 @@ def leerArchivo(filename):
             
         esp = esp + 1
         
-    print("8")        
+    #print("8")        
     df2.to_excel("Datos/" + "operaciones_HR.xlsx")
     dfF.to_excel("Datos/" + "HR_TL.xlsx")
-    print("9")       
+    #print("9")       
        
     Datos = []  #Se almacena cada reistro de cada especie para su procesamiento
     nEspecies = 0
@@ -209,9 +216,9 @@ def leerArchivo(filename):
         plt.title(Nespecie)
         plt.xlabel("Tasa de cosecha")
         plt.ylabel("Cambio de entropía")
-        fig.savefig("graph/" + Nespecie + '.png')
+        fig.savefig("Graph/" + Nespecie + '.png')
         plt.legend()
-        plt.show()
+        #plt.show()
         nEspecies = nEspecies + 1
         nEspecies2 = nEspecies + 1
         Datos = []
